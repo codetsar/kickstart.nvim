@@ -973,7 +973,7 @@ vim.opt.expandtab = false
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 
-vim.o.colorcolumn = '120'
+vim.o.colorcolumn = '80'
 
 vim.o.spelllang = 'en_us,ru'
 
@@ -994,6 +994,33 @@ vim.g.loaded_ruby_profiver = 0
 vim.g.loaded_perl_provider = 0
 
 vim.opt.cursorline = false
+vim.g.autopep8_on_save = 0
+vim.wo.relativenumber = true
+
+local is_diagnostics_visible = false
+
+-- Set initial values
+vim.diagnostic.config {
+  virtual_text = is_diagnostics_visible,
+  underline = is_diagnostics_visible,
+  signs = is_diagnostics_visible,
+}
+
+-- Function to toggle diagnostics visibility
+local function toggle_diagnostics()
+  is_diagnostics_visible = not is_diagnostics_visible
+  vim.diagnostic.config {
+    virtual_text = is_diagnostics_visible,
+    underline = is_diagnostics_visible,
+    signs = is_diagnostics_visible,
+  }
+end
+
+-- Key mapping to toggle diagnostics with <leader>lx
+vim.keymap.set('n', '<leader>lx', toggle_diagnostics, { silent = true, noremap = true })
+vim.cmd [[
+  highlight LineNr guifg=#ffcc00 ctermfg=yellow
+]]
 -- ]] custom part
 
 -- The line beneath this is called `modeline`. See `:help modeline`

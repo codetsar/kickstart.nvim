@@ -59,4 +59,61 @@ return {
     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
   },
+  'williamboman/mason.nvim',
+  'williamboman/mason-lspconfig.nvim',
+  {
+    'neovim/nvim-lspconfig',
+    opts = {
+      servers = {
+        -- pyright = {},
+      },
+    },
+  },
+  {
+    'folke/trouble.nvim',
+    opts = { use_diagnostic_sign = true },
+    keys = {
+      {
+        '<leader>xx',
+        '<cmd>Trouble diagnostics toggle<cr>',
+        desc = 'Diagnostics (Trouble)',
+      },
+    },
+  },
+  {
+    'saghen/blink.cmp',
+    dependencies = 'rafamadriz/friendly-snippets',
+    version = '*',
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
+      },
+    },
+    opts_extend = { 'sources.default' },
+  },
+  require('lspconfig').basedpyright.setup {
+    basedpyright = {
+      analysis = {
+        diagnosticMode = 'openFilesOnly',
+        -- typeCheckingMode = 'basic',
+      },
+    },
+  },
+  -- {
+  --   require('williamboman/mason-lspconfig.nvim').setup { ensure_installed = { 'pyright' } },
+  -- },
+
+  -- config python language server
+  -- lspconfig['pyright'].setup {
+  --   capabilities = capabilities,
+  --   on_attach = on_attach,
+  --   settings = {
+  --     python = {
+  --       pythonPath = '/usr/bin/python3.13',
+  --     },
+  --     pyright = {},
+  --   },
+  -- },
 }
