@@ -93,27 +93,29 @@ return {
     },
     opts_extend = { 'sources.default' },
   },
-  require('lspconfig').basedpyright.setup {
-    basedpyright = {
-      analysis = {
-        diagnosticMode = 'openFilesOnly',
-        -- typeCheckingMode = 'basic',
-      },
-    },
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    main = 'ibl',
+    ---@module "ibl"
+    ---@type ibl.config
+    opts = {},
   },
-  -- {
-  --   require('williamboman/mason-lspconfig.nvim').setup { ensure_installed = { 'pyright' } },
-  -- },
-
-  -- config python language server
-  -- lspconfig['pyright'].setup {
-  --   capabilities = capabilities,
-  --   on_attach = on_attach,
-  --   settings = {
-  --     python = {
-  --       pythonPath = '/usr/bin/python3.13',
-  --     },
-  --     pyright = {},
-  --   },
-  -- },
+  {
+    'Exafunction/windsurf.vim',
+    config = function()
+      --   -- Change '<C-g>' here to any keycode you like.
+      vim.keymap.set('i', '<C-g>', function()
+        return vim.fn['codeium#Accept']()
+      end, { expr = true, silent = true })
+      vim.keymap.set('i', '<c-;>', function()
+        return vim.fn['codeium#CycleCompletions'](1)
+      end, { expr = true, silent = true })
+      vim.keymap.set('i', '<c-,>', function()
+        return vim.fn['codeium#CycleCompletions'](-1)
+      end, { expr = true, silent = true })
+      vim.keymap.set('i', '<c-x>', function()
+        return vim.fn['codeium#Clear']()
+      end, { expr = true, silent = true })
+    end,
+  },
 }
