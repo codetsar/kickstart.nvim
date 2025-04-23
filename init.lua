@@ -1061,4 +1061,5 @@ vim.keymap.set('n', '<leader>lx', toggle_diagnostics, { silent = true, noremap =
 vim.cmd [[
   highlight LineNr guifg=#ffcc00 ctermfg=yellow
 ]]
+vim.o.winborder = 'rounded'
 -- ]] custom part
