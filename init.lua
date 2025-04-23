@@ -867,29 +867,30 @@ require('lazy').setup({
       signature = { enabled = true },
     },
   },
-
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
+  {
+    'Shatur/neovim-ayu',
+    lazy = false, -- load on startup
+    priority = 1000, -- load before other plugins
     config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      require('tokyonight').setup {
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
+      require('ayu').setup {
+        mirage = true, -- set to false if you prefer `ayu-dark` or `ayu-light`
+        overrides = {
+          -- Common italic highlights to override
+          Comment = { italic = false },
+          ['@comment'] = { italic = false },
+          ['@parameter'] = { italic = false },
+          ['@variable'] = { italic = false },
+          ['@type'] = { italic = false },
+          ['@keyword'] = { italic = false },
+          ['@keyword.function'] = { italic = false },
+          ['@function'] = { italic = false },
+          ['@function.call'] = { italic = false },
+          ['@string.documentation'] = { italic = false },
         },
       }
-
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd 'colorscheme ayu' -- apply the theme
     end,
   },
-
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -976,7 +977,7 @@ require('lazy').setup({
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
@@ -1006,3 +1007,58 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+-- [[ custom part
+vim.opt.expandtab = false
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+
+vim.o.colorcolumn = '80'
+
+vim.o.spelllang = 'en_us,ru'
+
+local function escape(str)
+  local escape_chars = [[;,."|\]]
+  return vim.fn.escape(str, escape_chars)
+end
+
+local en_dvorak = [[',.pyfgcrl/=aoeuidhtns;qjkxbmwv]]
+local ru = [[йцукенгшщзхъфывапролджячсмитьбю]]
+local en_dvorak_shift = [["<>PYFGCRL?+AOEUIDHTNS:QJKXBMWV]]
+local ru_shift = [[ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЯЧСМИТЬБЮ]]
+vim.opt.langmap = vim.fn.join({ escape(ru_shift) .. ';' .. escape(en_dvorak_shift), escape(ru) .. ';' .. escape(en_dvorak) }, ',')
+
+vim.opt.swapfile = false
+
+vim.g.loaded_ruby_profiver = 0
+vim.g.loaded_perl_provider = 0
+
+vim.opt.cursorline = false
+vim.g.autopep8_on_save = 0
+vim.wo.relativenumber = true
+
+local is_diagnostics_visible = false
+
+-- Set initial values
+vim.diagnostic.config {
+  virtual_text = is_diagnostics_visible,
+  underline = is_diagnostics_visible,
+  signs = is_diagnostics_visible,
+}
+
+-- Function to toggle diagnostics visibility
+local function toggle_diagnostics()
+  is_diagnostics_visible = not is_diagnostics_visible
+  vim.diagnostic.config {
+    virtual_text = is_diagnostics_visible,
+    underline = is_diagnostics_visible,
+    signs = is_diagnostics_visible,
+  }
+end
+
+-- Key mapping to toggle diagnostics with <leader>lx
+vim.keymap.set('n', '<leader>lx', toggle_diagnostics, { silent = true, noremap = true })
+vim.cmd [[
+  highlight LineNr guifg=#ffcc00 ctermfg=yellow
+]]
+-- ]] custom part
