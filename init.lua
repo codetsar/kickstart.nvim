@@ -911,3 +911,19 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+vim.o.spelllang = 'en_us,ru'
+local function escape(str)
+  local escape_chars = [[;,."|\]]
+  return vim.fn.escape(str, escape_chars)
+end
+local en_dvorak = [[',.pyfgcrl/=aoeuidhtns;qjkxbmwv]]
+local ru = [[йцукенгшщзхъфывапролджячсмитьбю]]
+local en_dvorak_shift = [["<>PYFGCRL?+AOEUIDHTNS:QJKXBMWV]]
+local ru_shift = [[ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЯЧСМИТЬБЮ]]
+vim.opt.langmap = vim.fn.join({ escape(ru_shift) .. ';' .. escape(en_dvorak_shift), escape(ru) .. ';' .. escape(en_dvorak) }, ',')
+
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
