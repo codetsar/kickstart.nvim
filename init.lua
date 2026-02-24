@@ -860,7 +860,21 @@ require('lazy').setup({
       })
     end,
   },
-
+  {
+    'shatur/neovim-ayu',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require('ayu').setup {
+        mirage = true,
+        overrides = {
+          Italic = { italic = false },
+          Comment = { italic = false },
+        },
+      }
+      vim.cmd.colorscheme 'ayu-mirage'
+    end,
+  },
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
@@ -927,3 +941,4 @@ vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
+
