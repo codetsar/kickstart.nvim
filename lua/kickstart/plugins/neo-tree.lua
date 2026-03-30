@@ -18,6 +18,11 @@ return {
       window = {
         mappings = {
           ['\\'] = 'close_window',
+          ['o'] = function(state)
+            local node = state.tree:get_node()
+            local path = node:get_id()
+            vim.fn.system { 'wslview', path }
+          end,
         },
       },
     },

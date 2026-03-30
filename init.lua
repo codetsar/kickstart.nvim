@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -929,3 +929,8 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
 
 vim.o.winborder = 'rounded'
+
+vim.api.nvim_create_user_command('OpenInWindows', function()
+  local path = vim.fn.expand '%:p'
+  vim.fn.system { 'wslview', path }
+end, {})
